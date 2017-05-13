@@ -1,0 +1,31 @@
+function kalman_reduce_frame_left(dim);
+
+main_data = get(gcf,'UserData');
+set(gcf,'UserData',main_data);
+
+axes_hidden       = findobj(gcf,'Tag','demo_kalman_axes_hidden');
+axes_top          = findobj(gcf,'Tag','demo_kalman_axes_top');
+axes_bottom       = findobj(gcf,'Tag','demo_kalman_axes_bottom');
+pos_axes_top      = get(axes_top,'Position');
+pos_axes_bottom   = get(axes_bottom,'Position');
+pos_axes_hidden   = get(axes_hidden,'Position');
+
+if strcmp('on',get(axes_hidden,'Visible'));
+    tag_axes_hidden = get(axes_hidden,'Tag');
+    set(gcf,'CurrentAxes',axes_hidden);
+    cla;
+    grid off;
+    set(gca,'XTick',[0 1]);
+    set(gca,'YTick',[0 1]);
+    set(gca,'Tag',tag_axes_hidden);
+    for k = dim.main_fig.left_frame.width.large:-5:dim.main_fig.left_frame.width.small
+        set(axes_top,'Position',[dim.main_fig.space_lr+dim.main_fig.left_frame.width.small+dim.main_fig.axes.space_left+k-dim.main_fig.left_frame.width.small pos_axes_top(2) dim.main_fig.width-(2*dim.main_fig.space_lr)-dim.main_fig.left_frame.width.small-dim.main_fig.axes.space_left-k+dim.main_fig.left_frame.width.small pos_axes_top(4)]);
+        set(axes_bottom,'Position',[dim.main_fig.space_lr+dim.main_fig.left_frame.width.small+dim.main_fig.axes.space_left+k-dim.main_fig.left_frame.width.small pos_axes_bottom(2) dim.main_fig.width-(2*dim.main_fig.space_lr)-dim.main_fig.left_frame.width.small-dim.main_fig.axes.space_left-k+dim.main_fig.left_frame.width.small pos_axes_bottom(4)]);        
+        drawnow;
+        if (k > dim.main_fig.left_frame.width.small + 2*dim.main_fig.space_lr + 10)
+            set(axes_hidden,'Position', [pos_axes_hidden(1) pos_axes_hidden(2), k-dim.main_fig.left_frame.width.small-(2*dim.main_fig.space_lr), pos_axes_hidden(4)]);
+        else
+            set(axes_hidden,'Visible','Off');
+        end;        
+    end;
+end;
